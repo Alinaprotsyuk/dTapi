@@ -12,64 +12,29 @@ import UIKit
 
 class SecondViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
    
-    var records = [Track]()
+    var records = [Records]()
     
     @IBOutlet weak var table: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        onGetTapped()
-      
-        // Do any additional setup after loading the view.
+        //onGetTapped()
+        Records.getRecords(completion: { (results:[Records]?) in
+            
+            if let weatherData = results {
+                self.records = weatherData
+                
+                DispatchQueue.main.async {
+                    self.table.reloadData()
+                }
+            }
+        })
+       
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-   func onGetTapped() {
-        var tracks = [Track]()
-        guard let url = URL(string: "http://vps9615.hyperhost.name/subject/getRecords") else { return }
-        let session = URLSession.shared
-        session.dataTask(with: url) { (data, response, error) in
-            if let response = response {
-                print(response)
-            }
-            if let data = data {
-                //print(data)
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: []) as! [Any]
-                    //print("There are =  \(json.count)")
-                    //print (json)
-                    for trackDictionary in json {
-                        if let trackDictionary = trackDictionary as? [String: Any],
-                           let desc = trackDictionary["subject_description"] as? String ,
-                            let id = trackDictionary["subject_id"] as? String,
-                            let name = trackDictionary["subject_name"] as? String {
-                            tracks.append(Track(id : id, name : name, description: desc))
-                        } else {
-                            print( "Problem parsing trackDictionary\n")
-                        }
-                        self.records = tracks
-                    }
-                    DispatchQueue.main.async {
-                       self.table.reloadData()
-                    }
-                    
-                }
-                    catch {
-                    print(error)
-                }
-                print(tracks.count)
-                for item in tracks {
-                    print(item.name)
-                    print(" ")
-                }
-                
-           }
-            
-        }.resume()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
