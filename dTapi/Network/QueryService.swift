@@ -46,10 +46,14 @@ class QueryService {
         request.httpMethod = "DELETE"
         
         let task = URLSession.shared.dataTask(with: request) { (data:Data?, response:URLResponse?, error:Error?) in
+            
             guard let _ = data, error == nil else {
                 print("error=\(String(describing: error))")
                 return
             }
+            
+            
+                    
             guard let httpStatus = response as? HTTPURLResponse else {return}
             if httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")

@@ -13,12 +13,12 @@ struct Records: Decodable {
     let name : String
     let description : String
     
-    enum SerializationError:Error {
+    /*enum SerializationError:Error {
         case missing(String)
         case invalid(String, Any)
-    }
+    }*/
     
-    init(id : String, name : String, description : String) {
+    init(id : String, name : String, description : String ) {
         /*guard let id = json["subject_id"] as? String else {throw SerializationError.missing("summary is missing")}
         guard let name = json["subject_name"] as? String else {throw SerializationError.missing("icon is missing")}
         guard let description = json["subject_description"] as? String else {throw SerializationError.missing("temp is missing")}*/
