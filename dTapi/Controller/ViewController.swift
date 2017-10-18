@@ -55,8 +55,6 @@ class ViewController: UIViewController {
             
             if let code = results {
                 self.httpStatusCode = code
-                
-                
                 DispatchQueue.main.async {
                     print(self.httpStatusCode!)
                     if self.httpStatusCode == 200 {
